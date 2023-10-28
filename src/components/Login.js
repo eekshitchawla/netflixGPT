@@ -1,8 +1,19 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { validateData } from "../utils/validate";
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true);
+  const email = useRef(null);
+  const pass = useRef(null);
+
+  const handleButtonClick = (email, pass) => {
+    console.log(email);
+    console.log(pass);
+    const isDataValid = validateData(email.current.value, pass.current.value);
+    console.log(isDataValid);
+  };
+
   const toggleSignInForm = () => {
     setIsSignIn(!isSignIn);
   };
@@ -16,7 +27,10 @@ const Login = () => {
         />
       </div>
 
-      <form className="absolute my-36 mx-auto w-3/12 text-center bg-black bg-opacity-80 p-12 left-0 right-0 text-white rounded-lg">
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="absolute my-36 mx-auto w-3/12 text-center bg-black bg-opacity-80 p-12 left-0 right-0 text-white rounded-lg"
+      >
         <h1 className="font-bold text-3xl p-2 text-left">
           {isSignIn ? "Sign In" : "Sign Up"}
         </h1>
@@ -28,16 +42,21 @@ const Login = () => {
           />
         ) : null}
         <input
-          type="text"
+          ref={email}
+          type="email"
           placeholder="E-Mail"
           className="p-2 m-2 w-full rounded-lg bg-gray-800"
         />
         <input
+          ref={pass}
           type="password"
           placeholder="Password"
           className="p-2 m-2 w-full rounded-lg bg-gray-800"
         />
-        <button className="p-2 m-2 w-full bg-red-700 rounded-lg">
+        <button
+          className="p-2 m-2 w-full bg-red-700 rounded-lg"
+          onClick={() => handleButtonClick(email, pass)}
+        >
           {isSignIn ? "Sign In" : "Sign Up"}
         </button>
         <p className="p-2 text-left cursor-pointer" onClick={toggleSignInForm}>
